@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     supabase_service_key: str = ""
     openai_api_key: str = ""
     anthropic_api_key: str = ""
+    n8n_webhook_url: str = ""
 
     class Config:
         env_file = ".env"
