@@ -13,14 +13,16 @@ def create_company(payload: OnboardingPayload) -> dict:
     company_id = f"{slug}-{int(time.time() * 1000)}"
     tint = random.choice(TINTS)
 
-    result = get_client().table("companies").insert({
+    data = {
         "id":       company_id,
         "name":     payload.empresa,
         "initials": initials,
         "tint":     tint,
         "sector":   "Nuevo cliente",
-        "plan":     "Starter",
         "program":  payload.programa,
         "status":   "active",
-    }).execute()
-    return result.data[0]
+    }
+    response = get_client().table("companies").insert(data).execute()
+    if not response.data:
+        raise RuntimeError(f"Supabase insert failed: {response}")
+    return response.data[0]
